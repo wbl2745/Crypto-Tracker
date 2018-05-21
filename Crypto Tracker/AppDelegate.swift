@@ -13,9 +13,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    /*
+     Without a storyboard, we need to provide code here to set up the windows.
+    */
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // Instantiate the window to be the size of the screen.
+        // TODO: I wonder what would happen if it were smaller or larger than the screen?
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let cryptoTableVC = CryptoTableViewController()
+        // The table is inside a navigation controller.
+        let navController = UINavigationController(rootViewController: cryptoTableVC)
+        window?.rootViewController = navController
+        window?.makeKeyAndVisible()
+        
+        
         return true
     }
 

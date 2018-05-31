@@ -44,6 +44,7 @@ import LocalAuthentication  // framework for biometrics
  =======
  05/20/18 - Started
  05/25/18 - Improving the documentation
+ 05/31/18 - Finished authentication
  
  */
  
@@ -56,6 +57,7 @@ import LocalAuthentication  // framework for biometrics
 // TODO: Redo this with a storyboard
 // TODO: Retrieve currencies based on checkboxes
 // TODO: Modify the view if the iPhone is rotated
+// FIXME: When you turn on security, but don't quit the app, it still allows you to come in without authentication.
 // FIXME: Move constants to single location or if only used in a single file, also make them look like constants.
  
 // MARK: - Code
@@ -92,20 +94,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) &&
             UserDefaults.standard.bool(forKey: Constants.UserDefaultsConstants.AUTH) {
-            // Auth View Controller
+            let authVC = AuthViewController()
+            window?.rootViewController = authVC
         } else {
             // Without authentication the following would not be in the if statement
             // Instantiate a View Controller which is defined to be CryptoTableViewController
             let cryptoTableVC = CryptoTableViewController()
-            
             // The table is inside a navigation controller.
             let navController = UINavigationController(rootViewController: cryptoTableVC)
             window?.rootViewController = navController
-            
-            // Identify the window as being the starting place
-            window?.makeKeyAndVisible()
         }
-        return true     // All OK to launch app
+        // Identify the window as being the starting place.
+        //
+        // ************************
+        // Make the window visible!
+        // ************************
+        window?.makeKeyAndVisible()
+        return true                         // All OK to launch app
     } // func application
 
     // MARK: - Empty funcs

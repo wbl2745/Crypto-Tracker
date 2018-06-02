@@ -9,8 +9,12 @@
 import UIKit
 import LocalAuthentication      // Authentication library
 
+// MARK: - Constants
+
 private let HEADER_HEIGHT : CGFloat = 100.0
 private let NET_WORTH_HEIGHT : CGFloat = 45.0
+
+// MARK: - Code
 
 /*
  CoinDataDelegate is a protocol defined in CoinData.swift that requires the func newPrices.
@@ -57,10 +61,48 @@ class CryptoTableViewController: UITableViewController, CoinDataDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         CoinData.shared.getPrices()
+        
+        // Placing a button on the left side of the navigation header
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Report", style: .plain, target: self,
+                                                           action: #selector(reportTapped))
+        
         if LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
             updateSecureButton()
         }
     } // func viewDidLoad
+    
+    @objc func reportTapped() {
+        let formatter = UIMarkupTextPrintFormatter(markupText: CoinData.shared.html())
+        let render = UIPrintPageRenderer()
+        render.addPrintFormatter(formatter, startingAtPageAt: 0 )
+        // A4 sized paper
+        // FIXME: Remove magic numbers
+        // TODO: change this to standard 8.5 x 11
+        // TODO: how do these numbers relate to real size?
+        let page = CGRect(x: 0, y: 0, width: 595.2, height: 841.8)
+        // TODO: Are these key values?
+        render.setValue(page, forKey: "paperRect")
+        render.setValue(page, forKey: "printableRect")
+        
+        let pdfData = NSMutableData()
+        UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
+        
+        for i in 0 ..< render.numberOfPages {
+            UIGraphicsBeginPDFPage()
+            render.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
+            
+        }
+        
+        UIGraphicsEndPDFContext()
+        
+        let shareVC = UIActivityViewController(activityItems: [pdfData], applicationActivities: nil)
+        present(shareVC, animated: true, completion: nil)
+    } // func reportTapped
+    
+    
+    
+    
+    
     
     /*
      Required by the protocol CoinDataDelegate

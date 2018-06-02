@@ -76,6 +76,19 @@ class CoinData {
         }
     } // init
     
+    func html() -> String {
+        var html = "<h1>My Crypto Report</h1>"
+        html += "<h2>Net Worth: \(netWorthAsString())</h2>"
+        html += "<ul>"
+        for coin in coins {
+            if coin.amount != 0.0 {
+                html += "<li>\(coin.symbol) - Own: \(coin.amount) - Valued at: \(doubleToMoneyString(money: coin.amount * coin.price)) </li>"
+            }
+        }
+        html += "</ul>"
+        return html
+    } // func html
+    
     /*
      Sum up the worth of all the coins and return the value as a String.
      */

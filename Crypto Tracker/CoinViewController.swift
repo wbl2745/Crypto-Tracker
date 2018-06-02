@@ -12,6 +12,9 @@ import SwiftChart       // Framework for the SwiftChart CocoaPod
 // MARK: - Constants
 
 // TODO: Should these constants be here or in Constants.swift?
+// FIXME: The code would accept a negative number for the amount owned
+// FIXME: The code would accept a non-number for the amount owned
+// FIXME: The only way to delete ownership of a coin is to input 0. Deleting the value doesn't delete the value.
 
 private let CHART_HEIGHT : CGFloat = 300.0
 private let IMAGE_SIZE : CGFloat = 100.0

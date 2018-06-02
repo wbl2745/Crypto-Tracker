@@ -57,6 +57,10 @@ import LocalAuthentication  // framework for biometrics
 // TODO: Redo this with a storyboard
 // TODO: Retrieve currencies based on checkboxes
 // TODO: Modify the view if the iPhone is rotated
+// TODO: Force update the price information
+// TODO: When is the price information updated? It appears that it doesn't update the price once it got it first time.
+// TODO: Update the price every so often. Configure how often you want the price updated.
+// TODO: Nick suggested pre-loading the historical data, not waiting for the user to request it.
 // FIXME: When you turn on security, but don't quit the app, it still allows you to come in without authentication.
 // FIXME: Move constants to single location or if only used in a single file, also make them look like constants.
  

@@ -119,6 +119,8 @@ class CoinData {
                         [String:Double] {
                         if let price = coinJSON[CURRENCY] {
                             coin.price = price
+                            // save the price between runs
+                            UserDefaults.standard.set(price, forKey: coin.symbol)
                         }
                     }
                 }
@@ -158,11 +160,23 @@ class Coin {
     var amount : Double = 0.0
     var historicalData : [Double] = [Double]()
     
+    /*
+     Instantiate the Coin
+    */
+    
     init( _ symbol : String ) {
         self.symbol = symbol
         if let image = UIImage(named: symbol) {
             self.image = image
         }
+        
+        // FIXME: Use constants or some appropriate way rather than + "amount" which is prone to error
+        self.price = UserDefaults.standard.double(forKey: symbol)
+        self.amount = UserDefaults.standard.double(forKey: symbol + "amount" )
+        if let history = UserDefaults.standard.array(forKey: symbol + "history" ) as? [Double] {
+            self.historicalData = history
+        }
+        
     } // init
     
     /*
@@ -192,6 +206,7 @@ class Coin {
                         }
                     }
                     CoinData.shared.delegate?.newHistory?()
+                    UserDefaults.standard.set(self.historicalData, forKey: self.symbol + "history")
                 }
             }
         }
